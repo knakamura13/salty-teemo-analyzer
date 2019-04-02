@@ -54,6 +54,7 @@ def processFetchedUrls(soup):
 		print('Player {}'.format(i))
 		avg = 0.0
 		count = 1.0
+		# TODO: Ensure avg is calculated and does not throw a type error.
 		for percentage in percentages:
 			num = float(percentage.text.split('%')[0])
 			avg = (avg + num) / count
