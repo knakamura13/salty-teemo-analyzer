@@ -23,6 +23,17 @@ from selenium.common.exceptions import TimeoutException
 
 GAME_INFO_URL = "https://gameinfo.saltyteemo.com"
 
+SPINNER = itertools.cycle(['|', '/', '-', '\\'])
+
+SCRIPT = '''
+on run {targetBuddyPhone, targetMessage}
+tell application "Messages"
+set targetService to 1st service whose service type = iMessage
+set targetBuddy to buddy targetBuddyPhone of targetService
+send targetMessage to targetBuddy
+end tell
+end run'''
+
 
 
 
@@ -34,6 +45,12 @@ GAME_INFO_URL = "https://gameinfo.saltyteemo.com"
 options = Options()
 options.headless = True
 browser = webdriver.Chrome('/Users/kjnakamura/Desktop/chromedriver', chrome_options=options)
+
+prev_url = ""
+
+curr_url = ""
+
+first_iteration = True
 
 
 
