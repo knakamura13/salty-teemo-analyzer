@@ -61,6 +61,15 @@ first_iteration = True
 
 
 def fetchHtml(url, delay):
+	''' Fetch HTML Function
+	
+	Uses Selenium to grab the HTML contents of a web page,
+	then passes the HTML, as BeautifulSoup, to `parseHtml()`.
+
+	:param url: 	The url of the web page to grab HTML from.
+	:param delay: 	The amount of seconds to wait for the page contents to finish loading.
+	'''
+
 	browser.get(url)
 	time.sleep(delay)
 
@@ -85,6 +94,14 @@ def fetchHtml(url, delay):
 		print('No game info found.')
 
 def parseHtml(soup):
+	''' Parse HTML Function
+
+	Uses BeautifulSoup to make an array of all `tr` elements on the page,
+	then calculates the average win-rate of both the Blue and Red teams.
+
+	:param soup: 	The BeautifulSoup object passed in from a successful HTML retrieval in `fetchHtml()`.
+	'''
+
 	rows = soup.find_all(['tr'])
 
 	blue_total = 0.0
