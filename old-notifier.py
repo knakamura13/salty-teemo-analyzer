@@ -12,11 +12,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-
-#############
-# Constants #
-#############
-
 SPINNER = itertools.cycle(['|', '/', '-', '\\'])
 
 SCRIPT = '''
@@ -30,11 +25,6 @@ end run'''
 
 GAME_INFO_URL = "https://gameinfo.saltyteemo.com"
 
-
-##############
-# Properties #
-##############
-
 options = Options()
 options.headless = True
 driver = webdriver.Chrome('/Users/kjnakamura/Desktop/chromedriver', chrome_options=options)
@@ -44,11 +34,6 @@ prev_url = ""
 curr_url = ""
 
 first_iteration = True
-
-
-#############
-# Functions #
-#############
 
 while(True):
     driver.get(GAME_INFO_URL)
