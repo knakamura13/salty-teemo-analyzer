@@ -27,11 +27,11 @@ SPINNER = itertools.cycle(['|', '/', '-', '\\'])
 
 SCRIPT = '''
 on run {targetBuddyPhone, targetMessage}
-tell application "Messages"
-set targetService to 1st service whose service type = iMessage
-set targetBuddy to buddy targetBuddyPhone of targetService
-send targetMessage to targetBuddy
-end tell
+	tell application "Messages"
+		set targetService to 1st service whose service type = iMessage
+		set targetBuddy to buddy targetBuddyPhone of targetService
+		send targetMessage to targetBuddy
+	end tell
 end run'''
 
 
@@ -44,7 +44,7 @@ end run'''
 
 options = Options()
 options.headless = True
-browser = webdriver.Chrome('/Users/kjnakamura/Desktop/chromedriver', chrome_options=options)
+browser = webdriver.Chrome(chrome_options=options)
 
 prev_url = ""
 
@@ -60,7 +60,7 @@ first_iteration = True
 #############
 
 
-def fetchHtmlForThePage(url, delay, block_name):
+def fetchHtml(url, delay):
 	browser.get(url)
 	time.sleep(delay)
 
@@ -68,7 +68,7 @@ def fetchHtmlForThePage(url, delay, block_name):
 
 	try:
 		# Search for an element.
-		element_present = EC.presence_of_element_located((By.TAG_NAME, block_name))
+		element_present = EC.presence_of_element_located((By.TAG_NAME, 'b'))
 		WebDriverWait(browser, 0).until(element_present)
 
 		# Return page HTMl.
@@ -78,9 +78,13 @@ def fetchHtmlForThePage(url, delay, block_name):
 
 	browser.quit()
 
-	return html
+	if (html):
+		soup = BeautifulSoup(html, 'html.parser')
+		parseHtml(soup)
+	else:
+		print('No game info found.')
 
-def processFetchedUrls(soup):
+def parseHtml(soup):
 	rows = soup.find_all(['tr'])
 
 	# TODO: Account for 0% win rate.
@@ -119,15 +123,7 @@ def processFetchedUrls(soup):
 ########
 
 
-html = fetchHtmlForThePage(GAME_INFO_URL, 10, 'b')
-
-if (html):
-	soup = BeautifulSoup(html, 'html.parser')
-	processFetchedUrls(soup)
-else:
-	print('No game info found.')
-
-
+fetchHtml(GAME_INFO_URL, 10)
 
 
 
