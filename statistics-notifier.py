@@ -87,33 +87,45 @@ def fetchHtml(url, delay):
 def parseHtml(soup):
 	rows = soup.find_all(['tr'])
 
-	# TODO: Account for 0% win rate.
 	blue_total = 0.0
 	red_total = 0.0
-	i = 0
-	for row in rows:
+
+	blue_count = 0.0
+	red_count = 0.0
+
+	for i, row in enumerate(rows):
 		if (i == 0):
-			i += 1
 			continue
 
 		percentages = row.find_all(['b'])
 
-		avg = 0.0
-		count = 1.0
+		# Calculate player total.
+		player_total = 0.0
+		player_count = 0.0
 		for percentage in percentages:
 			num = float(percentage.text.split('%')[0])
-			avg = (avg + num) / count
-			count += 1
+			if (num):
+				player_total += num
+				player_count += 1.0
 
-		if (i <= 5):
-			blue_total += avg
-		else:
-			red_total += avg
+		# Calculate player average.
+		player_average = player_total / player_count
 
-		i += 1
+		# Update team totals.
+		if (player_average):
+			if (i <= 5):
+				blue_total += player_average
+				blue_count += 1.0
+			else:
+				red_total += player_average
+				red_count += 1.0
 
-	print("Blue:", blue_total / 5.0, "%")
-	print("Red:", red_total / 5.0, "%")
+	# Calculate team averages.
+	blue_average = round(blue_total / blue_count, 2)
+	red_average = round(red_total / red_count, 2)
+
+	print("Blue Average: {}%".format(blue_average))
+	print("Red Average: {}%".format(red_average))
 
 
 
